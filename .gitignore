@@ -29,6 +29,7 @@ stats-cache.json
 statsig/
 
 # 其他临时文件
+docs/
 plan/
 plans/
 projects/
