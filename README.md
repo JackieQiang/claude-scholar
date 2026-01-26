@@ -10,13 +10,15 @@
 
 ```
 .claude/
-├── skills/          # 自定义技能（24+）
-├── commands/        # Slash 命令
+├── skills/          # 自定义技能（26+）
+├── commands/        # Slash 命令（13+）
 ├── agents/          # 自定义代理
-├── hooks/           # Git 钩子
+├── hooks/           # Git 钩子和事件处理（7）
 ├── plugins/         # 插件
 │   └── marketplaces/
 │       └── ai-research-skills/  # AI 研究技能插件
+├── plan/            # 规划文档目录
+├── rules/           # 编码规范和代理配置
 ├── CLAUDE.md        # 全局配置
 └── settings.json    # Claude 设置
 ```
@@ -33,10 +35,10 @@
 
 ### 写作相关 Skills
 
-- **scientific-writing** - 学术论文写作辅助
+- **ml-paper-writing** - ML/AI 论文写作辅助
   - 顶会投稿（NeurIPS, ICML, ICLR, ACL, AAAI, COLM）
   - 高影响期刊（Nature, Science, Cell, PNAS）
-  - ML 会议专用参考和 LaTeX 模板
+  - 包含文献研究、知识库和 LaTeX 模板
 - **writing-anti-ai** - 去除 AI 写作痕迹（中英双语）
 
 ### Claude Code 开发 Skills
@@ -47,12 +49,39 @@
 - **hook-development** - Hook 开发
 - **mcp-integration** - MCP 服务器集成
 
+### Slash 命令
+
+便捷的命令快捷方式：
+
+- **/commit** - 提交代码到 Git（遵循 Conventional Commits）
+- **/update-github** - 提交并推送更改到 GitHub
+- **/update-readme** - 更新 README 文档
+- **/plan** - 创建实施计划
+- **/tdd** - 测试驱动开发工作流
+- **/code-review** - 代码审查
+- **/build-fix** - 修复构建错误
+- **/verify** - 验证更改
+- **/checkpoint** - 创建检查点
+- **/learn** - 从代码中提取可重用模式
+- **/sc** - SuperClaude 命令分发器
+
 ### 其他 Skills
 
 - **planning-with-files** - 使用 Markdown 文件进行规划
 - **doc-coauthoring** - 文档协作工作流
 - **chrome-mcp-helper** - Chrome MCP 工具辅助
 - **kaggle-learner** - Kaggle 竞赛学习
+
+### Hooks 钩子
+
+自动化工作流的钩子脚本：
+
+- **session-start.sh** - 会话开始时执行
+- **session-summary.sh** - 会话结束时生成总结
+- **skill_forced_eval.sh** - 强制技能评估（区分命令和路径）
+- **resource_forced_eval.sh** - 资源访问评估
+- **security-guard.sh** - 安全检查和防护
+- **stop-summary.sh** - 停止时总结
 
 ## 全局配置
 
