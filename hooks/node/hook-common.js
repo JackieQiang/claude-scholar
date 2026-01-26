@@ -337,8 +337,25 @@ function getEnabledPlugins(homeDir) {
  */
 function getAvailableCommands(homeDir) {
   const commands = [];
-  const pluginsCache = path.join(homeDir, '.claude', 'plugins', 'cache');
 
+  // 收集本地命令
+  const localCommandsDir = path.join(homeDir, '.claude', 'commands');
+  if (fs.existsSync(localCommandsDir)) {
+    const commandFiles = fs.readdirSync(localCommandsDir)
+      .filter(f => f.endsWith('.md'));
+
+    for (const cmdFile of commandFiles) {
+      const cmdName = cmdFile.replace('.md', '');
+      commands.push({
+        plugin: 'local',
+        name: cmdName,
+        path: path.join(localCommandsDir, cmdFile)
+      });
+    }
+  }
+
+  // 收集插件命令
+  const pluginsCache = path.join(homeDir, '.claude', 'plugins', 'cache');
   if (!fs.existsSync(pluginsCache)) {
     return commands;
   }
