@@ -121,6 +121,26 @@ function collectPluginSkills() {
   return skills;
 }
 
+// 收集本地 Commands
+function collectLocalCommands() {
+  const commands = [];
+  const localCommandsDir = path.join(homeDir, '.claude', 'commands');
+
+  if (!fs.existsSync(localCommandsDir)) {
+    return commands;
+  }
+
+  const commandFiles = fs.readdirSync(localCommandsDir)
+    .filter(f => f.endsWith('.md'));
+
+  for (const cmdFile of commandFiles) {
+    const commandName = cmdFile.replace('.md', '');
+    commands.push(commandName);
+  }
+
+  return commands.sort();
+}
+
 // 收集插件 Commands
 function collectPluginCommands() {
   const commands = [];
@@ -204,6 +224,7 @@ function formatList(list) {
 
 // 收集资源
 const LOCAL_SKILLS = collectLocalSkills();
+const LOCAL_COMMANDS = collectLocalCommands();
 const PLUGIN_SKILLS = collectPluginSkills();
 const PLUGIN_COMMANDS = collectPluginCommands();
 const AI_RESEARCH_PLUGINS = collectAIResearchPlugins();
@@ -216,10 +237,13 @@ const output = `## 指令：资源可用性检查
 ### 📚 本地 Skills (~/.claude/skills/)
 ${formatList(LOCAL_SKILLS)}
 
+### 🔧 本地 Commands (~/.claude/commands/)
+${formatList(LOCAL_COMMANDS)}
+
 ### 🔌 插件 Skills (plugins/*/skills/)
 ${formatList(PLUGIN_SKILLS)}
 
-### 🔧 插件 Commands (plugins/*/commands/)
+### 🔌 插件 Commands (plugins/*/commands/)
 ${formatList(PLUGIN_COMMANDS)}
 
 ### 🧠 AI Research Skills (ai-research-skills)
@@ -229,8 +253,8 @@ ${formatList(AI_RESEARCH_PLUGINS)}
 
 **使用指南**：
 - 对于本地 skills，直接使用技能名称（如：agent-identifier）
-- 对于插件资源，使用完整路径（如：document-skills:pdf）
-- Commands 可用 /plugin-name:command-name 方式调用
+- 对于本地 commands，直接使用命令名称（如：/plan）
+- 对于插件资源，使用完整路径（如：document-skills:pdf 或 /superpowers:write-plan）
 - AI Research Skills 可作为知识库参考，包含模型架构、微调、数据处理等主题
 `;
 
