@@ -60,6 +60,8 @@ function buildMessage() {
     for (const file of tempInfo.files) {
       msg += `  • ${file}\n`;
     }
+  } else {
+    msg += '✅ 无临时文件\n';
   }
 
   msg += '---';
