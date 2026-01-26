@@ -14,7 +14,15 @@ const fs = require('fs');
 const common = require('./hook-common');
 
 // 读取 stdin 输入
-const input = JSON.parse(require('fs').readFileSync(0, 'utf8'));
+let input = {};
+try {
+  const stdinData = require('fs').readFileSync(0, 'utf8');
+  if (stdinData.trim()) {
+    input = JSON.parse(stdinData);
+  }
+} catch {
+  // 使用默认空对象
+}
 
 const cwd = input.cwd || process.cwd();
 const projectName = path.basename(cwd);

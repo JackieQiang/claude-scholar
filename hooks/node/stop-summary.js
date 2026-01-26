@@ -9,22 +9,30 @@
 const common = require('./hook-common');
 
 // 读取 stdin 输入
-const input = JSON.parse(require('fs').readFileSync(0, 'utf8'));
+let input = {};
+try {
+  const stdinData = require('fs').readFileSync(0, 'utf8');
+  if (stdinData.trim()) {
+    input = JSON.parse(stdinData);
+  }
+} catch {
+  // 使用默认空对象
+}
 
 const cwd = input.cwd || process.cwd();
 const reason = input.reason || 'task_complete';
 
 // 构建消息
 function buildMessage() {
-  let msg = '\\n---\\n';
-  msg += '✅ 会话结束\\n\\n';
+  let msg = '\n---\n';
+  msg += '✅ 会话结束\n\n';
 
   // Git 信息
   const gitInfo = common.getGitInfo(cwd);
 
   if (gitInfo.is_repo) {
-    msg += '📁 Git 仓库\\n';
-    msg += `  分支: ${gitInfo.branch}\\n`;
+    msg += '📁 Git 仓库\n';
+    msg += `  分支: ${gitInfo.branch}\n`;
 
     if (gitInfo.has_changes) {
       const changesDetails = common.getChangesDetails(cwd);
@@ -34,23 +42,23 @@ function buildMessage() {
       if (changesDetails.added > 0) msg += ` (+${changesDetails.added})`;
       if (changesDetails.modified > 0) msg += ` (~${changesDetails.modified})`;
       if (changesDetails.deleted > 0) msg += ` (-${changesDetails.deleted})`;
-      msg += '\\n';
+      msg += '\n';
     } else {
-      msg += '  状态: 干净\\n';
+      msg += '  状态: 干净\n';
     }
   } else {
-    msg += '📁 非Git 仓库目录\\n';
+    msg += '📁 非Git 仓库目录\n';
   }
 
-  msg += '\\n';
+  msg += '\n';
 
   // 临时文件检测
   const tempInfo = common.detectTempFiles(cwd);
 
   if (tempInfo.count > 0) {
-    msg += `🧹 临时文件: ${tempInfo.count} 个\\n`;
+    msg += `🧹 临时文件: ${tempInfo.count} 个\n`;
     for (const file of tempInfo.files) {
-      msg += `  • ${file}\\n`;
+      msg += `  • ${file}\n`;
     }
   }
 

@@ -9,7 +9,15 @@
 const path = require('path');
 
 // 读取 stdin 输入
-const input = JSON.parse(require('fs').readFileSync(0, 'utf8'));
+let input = {};
+try {
+  const stdinData = require('fs').readFileSync(0, 'utf8');
+  if (stdinData.trim()) {
+    input = JSON.parse(stdinData);
+  }
+} catch {
+  // 使用默认空对象
+}
 
 const toolName = input.tool_name || '';
 const cwd = input.cwd || process.cwd();
@@ -147,7 +155,7 @@ if (decision === 'deny') {
     hookSpecificOutput: {
       permissionDecision: 'deny'
     },
-    systemMessage: `🛑 安全拦截: ${reason}\\n\\n如需执行此操作，请手动在终端运行。`
+    systemMessage: `🛑 安全拦截: ${reason}\n\n如需执行此操作，请手动在终端运行。`
   };
 
   console.error(JSON.stringify(errorOutput));

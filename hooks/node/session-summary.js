@@ -12,7 +12,15 @@ const os = require('os');
 const common = require('./hook-common');
 
 // 读取 stdin 输入
-const input = JSON.parse(require('fs').readFileSync(0, 'utf8'));
+let input = {};
+try {
+  const stdinData = require('fs').readFileSync(0, 'utf8');
+  if (stdinData.trim()) {
+    input = JSON.parse(stdinData);
+  }
+} catch {
+  // 使用默认空对象
+}
 
 const cwd = input.cwd || process.cwd();
 const sessionId = input.session_id || 'unknown';
@@ -164,24 +172,24 @@ logContent += `\n`;
 fs.writeFileSync(logFile, logContent, 'utf8');
 
 // 构建显示给用户的消息
-let displayMsg = '\\n---\\n';
-displayMsg += '✅ **会话结束** | 工作日志已保存\\n\\n';
+let displayMsg = '\n---\n';
+displayMsg += '✅ **会话结束** | 工作日志已保存\n\n';
 displayMsg += '**本次变更**: ';
 
 if (gitInfo.is_repo) {
   if (gitInfo.has_changes) {
-    displayMsg += `${gitInfo.changes_count} 个文件\\n\\n`;
-    displayMsg += '**建议操作**:\\n';
-    displayMsg += `- 查看日志: cat .claude/logs/${path.basename(logFile)}\\n`;
-    displayMsg += '- 提交代码: git add . && git commit -m "feat: xxx"\\n';
+    displayMsg += `${gitInfo.changes_count} 个文件\n\n`;
+    displayMsg += '**建议操作**:\n';
+    displayMsg += `- 查看日志: cat .claude/logs/${path.basename(logFile)}\n`;
+    displayMsg += '- 提交代码: git add . && git commit -m "feat: xxx"\n';
   } else {
-    displayMsg += '无\\n\\n工作区干净 ✅\\n';
+    displayMsg += '无\n\n工作区干净 ✅\n';
   }
 } else {
-  displayMsg += '非 Git 仓库\\n';
+  displayMsg += '非 Git 仓库\n';
 }
 
-displayMsg += '\\n---';
+displayMsg += '\n---';
 
 const result = {
   continue: true,
