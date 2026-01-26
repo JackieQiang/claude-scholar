@@ -47,42 +47,45 @@ Include specific examples of how to fix issues.
 - Large functions (>50 lines)
 - Large files (>800 lines)
 - Deep nesting (>4 levels)
-- Missing error handling (try/catch)
-- console.log statements
-- Mutation patterns
+- Missing error handling (try/except)
+- print() statements in production code
+- Mutable default arguments
 - Missing tests for new code
+- Missing type hints (Python 3.6+)
 
 ## Performance (MEDIUM)
 
 - Inefficient algorithms (O(n²) when O(n log n) possible)
-- Unnecessary re-renders in React
-- Missing memoization
-- Large bundle sizes
-- Unoptimized images
-- Missing caching
-- N+1 queries
+- GIL contention in multi-threaded code
+- Memory leaks (circular references, unclosed resources)
+- Missing lru_cache for repeated function calls
+- Inefficient data structure choices (list vs set vs dict)
+- N+1 database queries
+- Blocking I/O in async functions
+- Unnecessary list comprehensions when generators suffice
 
 ## Best Practices (MEDIUM)
 
 - Emoji usage in code/comments
 - TODO/FIXME without tickets
-- Missing JSDoc for public APIs
+- Missing docstrings for public APIs
 - Accessibility issues (missing ARIA labels, poor contrast)
 - Poor variable naming (x, tmp, data)
 - Magic numbers without explanation
 - Inconsistent formatting
+- Missing if __name__ == "__main__" guards
 
 ## Review Output Format
 
 For each issue:
 ```
 [CRITICAL] Hardcoded API key
-File: src/api/client.ts:42
+File: src/api/client.py:42
 Issue: API key exposed in source code
 Fix: Move to environment variable
 
-const apiKey = "sk-abc123";  // ❌ Bad
-const apiKey = process.env.API_KEY;  // ✓ Good
+api_key = "sk-abc123"  # ❌ Bad
+api_key = os.getenv("API_KEY")  # ✓ Good
 ```
 
 ## Approval Criteria

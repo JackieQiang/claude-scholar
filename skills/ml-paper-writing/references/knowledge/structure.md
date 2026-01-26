@@ -264,3 +264,86 @@ about [phenomenon], which we discuss next.
 - **Flow**: Each section should logically lead to the next
 - **Clarity**: Make structure explicit with signposting
 - **Audience**: Write for tired reviewers - make their job easy
+
+
+
+## 何凯明（Kaiming He）的论文结构模式
+
+> 来源: 分析了何凯明的 19 篇代表性论文
+> 添加时间: {datetime.now().strftime('%Y-%m-%d')}
+
+### 摘要结构模式
+
+何凯明在摘要中常用的开场模式：
+
+**模式 1: 直接陈述贡献**
+```
+We introduce [method name], a [key feature] framework for [task].
+We show that [method] achieves [result] on [dataset].
+```
+
+**模式 2: 问题-解决方案**
+```
+[Problem] is difficult for [task]. We present [solution]
+that addresses this by [key mechanism].
+```
+
+**示例** (来自 ResNet):
+```
+Deeper neural networks are more difficult to train. We present a
+residual learning framework to ease the training of networks that
+are substantially deeper than those used previously.
+```
+
+### 引言结构模式
+
+**三段式引言:**
+1. **问题陈述** (2-3段) - 描述挑战和现有方法
+2. **方法概述** (1-2段) - 简洁介绍解决方案
+3. **主要贡献** (1段) - 列表形式，每条 1-2 行
+
+**贡献列表模式:**
+```markdown
+- 我们提出了 [方法]，解决了 [问题]
+- 我们展示了 [方法] 在 [数据集] 上的 [性能提升]
+- 我们证明了 [原理] 是有效的
+```
+
+### 方法部分结构
+
+何凯明的方法部分通常包含：
+
+1. **符号定义** - 清晰定义所有变量和符号
+2. **问题形式化** - 数学公式表达
+3. **方法描述** - 逐步算法解释
+4. **实现细节** - 网络架构、训练设置
+
+**常用句式:**
+- "Let us consider [变量] as [定义]"
+- "Formally, we define [公式]"
+- "We hypothesize that [假设]"
+- "To the extreme, [极端情况]"
+
+### 实验部分结构
+
+1. **实验设置** - 数据集、评价指标、实现细节
+2. **主要结果** - 核心性能对比
+3. **消融实验** - 组件分析
+4. **可视化分析** - 图表展示
+
+**结果描述模式:**
+- "Table X shows that [结果]"
+- "Fig. Y illustrates that [观察]"
+- "Our method achieves [指标] on [任务]"
+- "This represents a [X]% improvement over baseline"
+
+### 相关工作部分组织
+
+何凯明倾向于**主题式组织**而非时间顺序：
+
+**好的组织方式:**
+- "One line of work uses [方法A] [引用], whereas we use [方法B]"
+- "[方法A] [引用] assumes [假设], but we show [反驳]"
+
+**避免:**
+- "X et al. introduced [方法]. Y et al. improved [方法]"
