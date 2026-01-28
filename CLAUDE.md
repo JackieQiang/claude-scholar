@@ -34,39 +34,107 @@
 
 ## 技能目录结构
 
-### 📝 写作相关 (2 skills)
+### 📝 写作与学术 (5 skills)
 
-- **scientific-writing**: 学术论文写作辅助，覆盖顶会（NeurIPS, ICML, ICLR, KDD）和高影响期刊（Nature, Science, Cell, PNAS）投稿，提供逻辑分析、反 AI 化写作、审稿人视角润色
-- **writing-anti-ai**: 去除 AI 写作痕迹，支持中英文双语，基于维基百科"AI 写作特征"指南，检测并修复夸大象征意义、宣传性语言、肤浅分析、模糊归因、AI 词汇、否定式排比等模式
+- **ml-paper-writing**: ML/AI 论文写作辅助
+  - 顶会：NeurIPS, ICML, ICLR, ACL, AAAI, COLM
+  - 期刊：Nature, Science, Cell, PNAS
+  - 内置文献研究和 LaTeX 模板
+- **writing-anti-ai**: 去除 AI 写作痕迹，支持中英文双语
+- **doc-coauthoring**: 文档协作工作流
+- **daily-paper-generator**: 每日论文生成器
+- **latex-conference-template-organizer**: LaTeX 会议模板整理
 
-### 💻 开发相关 (7 skills)
+### 💻 开发工作流 (5 skills)
 
 - **git-workflow**: Git 工作流规范（Conventional Commits, 分支管理策略）
-- **bug-detective**: 调试和错误排查（Python, Bash/Zsh, JavaScript/TypeScript）
 - **code-review-excellence**: 代码审查最佳实践
+- **bug-detective**: 调试和错误排查（Python, Bash/Zsh, JavaScript/TypeScript）
 - **architecture-design**: ML 项目代码框架和设计模式
-- **uv-package-manager**: uv 包管理器使用指南
-- **code-simplifier**: 代码简化和重构
+- **verification-loop**: 验证循环和测试
 
-### 🔌 Claude Code 插件开发 (7 skills)
+### 🔌 插件开发 (8 skills)
 
 - **skill-development**: Skill 开发指南
+- **skill-improver**: Skill 改进工具
+- **skill-quality-reviewer**: Skill 质量审查
 - **command-development**: Slash 命令开发
-- **agent-identifier**: Agent 开发和配置
+- **command-name**: 插件结构指南
+- **agent-identifier**: Agent 开发配置
 - **hook-development**: Hook 开发和事件处理
 - **mcp-integration**: MCP 服务器集成
-- **command-name**: 插件结构和组织
 
 ### 📊 规划与协作 (2 skills)
 
 - **planning-with-files**: 使用 Markdown 文件进行规划和进度跟踪
 - **doc-coauthoring**: 文档协作工作流
 
-### 🧪 其他技能
+### 🧪 工具与实用 (4 skills)
 
-- **kaggle-learner**: 从 Kaggle 解决方案中学习
-- **latex-conference-template-organizer**: LaTeX 会议模板整理
+- **uv-package-manager**: uv 包管理器使用
 - **webapp-testing**: 本地 Web 应用测试
+- **kaggle-learner**: Kaggle 竞赛学习
+
+## 命令 (Commands)
+
+便捷的 Slash 命令快捷方式：
+
+| 命令 | 功能 |
+|------|------|
+| `/plan` | 创建实施计划 |
+| `/commit` | 提交代码（遵循 Conventional Commits） |
+| `/update-github` | 提交并推送到 GitHub |
+| `/update-readme` | 更新 README 文档 |
+| `/code-review` | 代码审查 |
+| `/tdd` | 测试驱动开发工作流 |
+| `/build-fix` | 修复构建错误 |
+| `/verify` | 验证更改 |
+| `/checkpoint` | 创建检查点 |
+| `/refactor-clean` | 重构和清理 |
+| `/learn` | 从代码中提取可重用模式 |
+| `/create_project` | 创建新项目 |
+| `/setup-pm` | 配置包管理器（uv/pnpm） |
+| `/update-memory` | 检查并更新 CLAUDE.md 记忆 |
+
+### SuperClaude 命令集 (`/sc`)
+
+- `/sc agent` - Agent 调度
+- `/sc analyze` - 代码分析
+- `/sc brainstorm` - 交互式头脑风暴
+- `/sc build` - 构建项目
+- `/sc design` - 系统设计
+- `/sc document` - 生成文档
+- `/sc git` - Git 操作
+- `/sc implement` - 功能实现
+- `/sc index` - 项目索引
+- `/sc test` - 测试执行
+
+## 代理 (Agents)
+
+自动化任务执行的专门代理：
+
+- **architect** - 系统架构设计
+- **build-error-resolver** - 构建错误修复
+- **code-reviewer** - 代码审查
+- **refactor-cleaner** - 代码重构和清理
+- **tdd-guide** - TDD 工作流指导
+- **kaggle-miner** - Kaggle 方案挖掘
+- **paper-miner** - 论文资源挖掘
+
+## 钩子 (Hooks)
+
+自动化工作流的钩子脚本（JavaScript 实现，跨平台支持）：
+
+| 钩子 | 触发时机 | 功能 |
+|------|----------|------|
+| `session-start.js` | 会话开始 | 初始化环境 |
+| `session-summary.js` | 会话结束 | 生成总结，自动检测 CLAUDE.md 更新 |
+| `stop-summary.js` | 会话停止 | 最终总结 |
+| `skill-forced-eval.js` | 用户输入 | 强制技能评估 |
+| `security-guard.js` | 安全检查 | 防护和验证 |
+| `update-memory-check` | 自动检测 | 监控 skills/commands/agents/hooks 变更，提醒更新 CLAUDE.md |
+
+注：所有 hooks 均使用 Node.js 编写，支持 Windows、macOS、Linux 跨平台运行。
 
 ---
 

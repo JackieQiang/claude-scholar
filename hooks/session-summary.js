@@ -165,6 +165,30 @@ if (todoInfo.found) {
   logContent += `- 更新待办事项: ${todoInfo.file} (${todoInfo.pending} 个未完成)\n`;
 }
 
+// CLAUDE.md 记忆更新检查
+const homeDir = os.homedir();
+const claudeMdCheck = common.checkClaudeMdUpdate(homeDir);
+
+if (claudeMdCheck.needsUpdate) {
+  logContent += `- ⚠️ **CLAUDE.md 记忆需要更新** (${claudeMdCheck.changedFiles.length} 个源文件变更)\n`;
+  logContent += `  运行 "/update-memory" 命令同步最新记忆\n`;
+
+  // 记录变更详情到日志
+  logContent += `\n`;
+  logContent += `### CLAUDE.md 变更详情\n`;
+  logContent += `\n`;
+  logContent += `| 类型 | 文件 | 修改时间 |\n`;
+  logContent += `|------|------|----------|\n`;
+  for (const file of claudeMdCheck.changedFiles.slice(0, 10)) {
+    logContent += `| ${file.type} | ${file.relativePath} | ${file.mtime} |\n`;
+  }
+  if (claudeMdCheck.changedFiles.length > 10) {
+    logContent += `| ... | 还有 ${claudeMdCheck.changedFiles.length - 10} 个文件 | ... |\n`;
+  }
+} else {
+  logContent += `- ✅ CLAUDE.md 记忆已是最新\n`;
+}
+
 logContent += '- 查看上下文快照: `cat .claude/session-context-*.md`\n';
 logContent += `\n`;
 
@@ -187,6 +211,13 @@ if (gitInfo.is_repo) {
   }
 } else {
   displayMsg += '非 Git 仓库\n';
+}
+
+// 添加 CLAUDE.md 更新提醒到显示消息
+if (claudeMdCheck.needsUpdate) {
+  displayMsg += '\n**⚠️ CLAUDE.md 记忆需要更新**\n';
+  displayMsg += `- ${claudeMdCheck.changedFiles.length} 个源文件已变更\n`;
+  displayMsg += '- 运行 `/update-memory` 同步最新记忆\n';
 }
 
 displayMsg += '\n---';

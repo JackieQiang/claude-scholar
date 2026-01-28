@@ -521,6 +521,107 @@ function formatDateTime(date = new Date()) {
 }
 
 /**
+ * 检查 CLAUDE.md 是否需要更新
+ * @param {string} homeDir - 用户主目录
+ * @returns {Object} 检查结果
+ */
+function checkClaudeMdUpdate(homeDir) {
+  const claudeMdPath = path.join(homeDir, '.claude', 'CLAUDE.md');
+  const lastSyncPath = path.join(homeDir, '.claude', '.last-memory-sync');
+
+  // 如果 CLAUDE.md 不存在，直接返回
+  if (!fs.existsSync(claudeMdPath)) {
+    return { needsUpdate: false, reason: 'CLAUDE.md not found' };
+  }
+
+  // 获取 CLAUDE.md 的修改时间
+  const claudeMdMtime = fs.statSync(claudeMdPath).mtimeMs;
+
+  // 获取上次同步时间（如果不存在则使用 CLAUDE.md 的创建时间）
+  let lastSyncMtime = claudeMdMtime;
+  if (fs.existsSync(lastSyncPath)) {
+    try {
+      lastSyncMtime = parseInt(fs.readFileSync(lastSyncPath, 'utf8').trim(), 10);
+    } catch {
+      lastSyncMtime = claudeMdMtime;
+    }
+  }
+
+  const referenceTime = Math.max(claudeMdMtime, lastSyncMtime);
+
+  // 定义需要监控的源文件目录
+  const sourceDirs = [
+    { dir: path.join(homeDir, '.claude', 'skills'), pattern: /skill\.md$/, type: 'skill' },
+    { dir: path.join(homeDir, '.claude', 'commands'), pattern: /\.md$/, type: 'command' },
+    { dir: path.join(homeDir, '.claude', 'agents'), pattern: /\.md$/, type: 'agent' },
+    { dir: path.join(homeDir, '.claude', 'hooks'), pattern: /\.(js|json)$/, type: 'hook' }
+  ];
+
+  const changedFiles = [];
+  let totalSkills = 0;
+  let totalCommands = 0;
+  let totalAgents = 0;
+  let totalHooks = 0;
+
+  // 扫描每个源目录
+  for (const { dir, pattern, type } of sourceDirs) {
+    if (!fs.existsSync(dir)) continue;
+
+    const files = getAllFiles(dir).filter(f => pattern.test(f));
+
+    for (const file of files) {
+      try {
+        const mtime = fs.statSync(file).mtimeMs;
+
+        // 统计总数
+        if (type === 'skill') totalSkills++;
+        else if (type === 'command') totalCommands++;
+        else if (type === 'agent') totalAgents++;
+        else if (type === 'hook') totalHooks++;
+
+        // 检查是否比参考时间新
+        if (mtime > referenceTime) {
+          changedFiles.push({
+            path: file,
+            type,
+            relativePath: path.relative(homeDir, file),
+            mtime: new Date(mtime).toLocaleString('zh-CN')
+          });
+        }
+      } catch {
+        // 忽略无法访问的文件
+      }
+    }
+  }
+
+  return {
+    needsUpdate: changedFiles.length > 0,
+    changedFiles,
+    stats: {
+      skills: totalSkills,
+      commands: totalCommands,
+      agents: totalAgents,
+      hooks: totalHooks
+    },
+    claudeMdMtime: new Date(claudeMdMtime).toLocaleString('zh-CN'),
+    lastSyncMtime: new Date(lastSyncMtime).toLocaleString('zh-CN')
+  };
+}
+
+/**
+ * 更新同步时间戳
+ * @param {string} homeDir - 用户主目录
+ */
+function updateSyncTimestamp(homeDir) {
+  const lastSyncPath = path.join(homeDir, '.claude', '.last-memory-sync');
+  try {
+    fs.writeFileSync(lastSyncPath, Date.now().toString(), 'utf8');
+  } catch {
+    // 忽略写入错误
+  }
+}
+
+/**
  * 创建临时文件
  * @param {string} prefix - 文件名前缀
  * @returns {string} 临时文件路径
@@ -547,5 +648,7 @@ module.exports = {
   collectPluginSkills,
   formatDateTime,
   createTempFile,
-  getAllFiles
+  getAllFiles,
+  checkClaudeMdUpdate,
+  updateSyncTimestamp
 };
