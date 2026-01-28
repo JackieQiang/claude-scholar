@@ -5,6 +5,8 @@
 Thumbs.db
 
 # 敏感和本地配置
+.env
+.env.local
 settings.local.json
 *.backup
 
