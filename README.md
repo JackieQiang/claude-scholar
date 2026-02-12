@@ -1,7 +1,7 @@
 # Claude Scholar
 
 <div align="center">
-  <img src="LOGO.jpeg" alt="Claude Scholar Logo" width="800"/>
+  <img src="LOGO.jpeg" alt="Claude Scholar Logo" width="100%"/>
 </div>
 
 **Language**: [English](README.md) | [中文](README.zh-CN.md)
