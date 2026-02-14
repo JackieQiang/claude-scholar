@@ -124,23 +124,45 @@ function getTodoInfo(cwd) {
  */
 function getChangesDetails(cwd) {
   try {
-    const added = execSync('git diff --name-only --diff-filter=A', {
-      cwd,
-      encoding: 'utf8',
-      stdio: 'pipe'
-    }).trim().split('\n').filter(Boolean).length;
+    let added = 0;
+    let modified = 0;
+    let deleted = 0;
 
-    const modified = execSync('git diff --name-only --diff-filter=M', {
-      cwd,
-      encoding: 'utf8',
-      stdio: 'pipe'
-    }).trim().split('\n').filter(Boolean).length;
+    // 解析 name-status 输出，每行格式: "A\tfilename" 或 "M\tfilename"
+    const parseNameStatus = (output) => {
+      for (const line of output.trim().split('\n').filter(Boolean)) {
+        const status = line.charAt(0);
+        if (status === 'A') added++;
+        else if (status === 'M') modified++;
+        else if (status === 'D') deleted++;
+      }
+    };
 
-    const deleted = execSync('git diff --name-only --diff-filter=D', {
+    // 工作区变更（unstaged）
+    const unstaged = execSync('git diff --name-status', {
       cwd,
       encoding: 'utf8',
       stdio: 'pipe'
-    }).trim().split('\n').filter(Boolean).length;
+    });
+    parseNameStatus(unstaged);
+
+    // 暂存区变更（staged）
+    const staged = execSync('git diff --cached --name-status', {
+      cwd,
+      encoding: 'utf8',
+      stdio: 'pipe'
+    });
+    parseNameStatus(staged);
+
+    // 未跟踪文件算作 added
+    const untracked = execSync('git status --porcelain', {
+      cwd,
+      encoding: 'utf8',
+      stdio: 'pipe'
+    });
+    for (const line of untracked.trim().split('\n').filter(Boolean)) {
+      if (line.startsWith('??')) added++;
+    }
 
     return { added, modified, deleted };
   } catch {
@@ -166,13 +188,28 @@ function analyzeChangesByType(cwd) {
     };
   }
 
-  const changes = gitInfo.changes.join('\n');
+  // 逐行匹配文件路径（git status --porcelain 格式: "XY filename"）
+  const files = gitInfo.changes.map(line => line.substring(3).trim());
 
-  const testFiles = (changes.match(/test/gi) || []).length;
-  const docsFiles = (changes.match(/\.(md|txt|rst)$/gi) || []).length;
-  const sqlFiles = (changes.match(/\.sql$/gi) || []).length;
-  const configFiles = (changes.match(/\.(json|yaml|yml|toml|ini|conf)$/gi) || []).length;
-  const serviceFiles = (changes.match(/(service|controller)/gi) || []).length;
+  const testRegex = /(?:^|[\/\\])tests?[\/\\]|[\/\\._]test[_.]|\.test\.|_test\./i;
+  const docsRegex = /\.(md|txt|rst)$/i;
+  const sqlRegex = /\.sql$/i;
+  const configRegex = /\.(json|yaml|yml|toml|ini|conf)$/i;
+  const serviceRegex = /(service|controller)/i;
+
+  let testFiles = 0;
+  let docsFiles = 0;
+  let sqlFiles = 0;
+  let configFiles = 0;
+  let serviceFiles = 0;
+
+  for (const file of files) {
+    if (testRegex.test(file)) testFiles++;
+    if (docsRegex.test(file)) docsFiles++;
+    if (sqlRegex.test(file)) sqlFiles++;
+    if (configRegex.test(file)) configFiles++;
+    if (serviceRegex.test(file)) serviceFiles++;
+  }
 
   return {
     test_files: testFiles,

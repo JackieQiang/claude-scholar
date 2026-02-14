@@ -127,8 +127,11 @@ output += `🔌 Enabled plugins:\n`;
 const enabledPlugins = common.getEnabledPlugins(homeDir);
 
 if (enabledPlugins.length > 0) {
-  for (const plugin of enabledPlugins) {
-    output += `  - ${plugin.name}\n`;
+  for (let i = 0; i < Math.min(5, enabledPlugins.length); i++) {
+    output += `  - ${enabledPlugins[i].name}\n`;
+  }
+  if (enabledPlugins.length > 5) {
+    output += `  ... and ${enabledPlugins.length - 5} more plugins\n`;
   }
 } else {
   output += `  None\n`;
@@ -141,14 +144,14 @@ output += `💡 Available commands:\n`;
 const availableCommands = common.getAvailableCommands(homeDir);
 
 if (availableCommands.length > 0) {
-  for (const cmd of availableCommands.slice(0, 20)) {
+  for (const cmd of availableCommands.slice(0, 5)) {
     const description = common.getCommandDescription(cmd.path) || `${cmd.plugin} command`;
     const truncatedDesc = description.length > 40 ? description.substring(0, 40) + '...' : description;
     output += `  /${cmd.name.padEnd(20)} ${truncatedDesc}\n`;
   }
 
-  if (availableCommands.length > 20) {
-    output += `  ... (${availableCommands.length - 20} more commands)\n`;
+  if (availableCommands.length > 5) {
+    output += `  ... and ${availableCommands.length - 5} more commands, use /help to list all\n`;
   }
 } else {
   output += `  No commands found\n`;

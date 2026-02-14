@@ -36,13 +36,11 @@ function buildMessage() {
 
     if (gitInfo.has_changes) {
       const changesDetails = common.getChangesDetails(cwd);
-      const total = changesDetails.added + changesDetails.modified + changesDetails.deleted;
 
-      msg += `  Changes: ${total} files`;
-      if (changesDetails.added > 0) msg += ` (+${changesDetails.added})`;
-      if (changesDetails.modified > 0) msg += ` (~${changesDetails.modified})`;
-      if (changesDetails.deleted > 0) msg += ` (-${changesDetails.deleted})`;
-      msg += '\n';
+      msg += '  Changes:\n';
+      if (changesDetails.added > 0) msg += `    增加: ${changesDetails.added} files\n`;
+      if (changesDetails.modified > 0) msg += `    修改: ${changesDetails.modified} files\n`;
+      if (changesDetails.deleted > 0) msg += `    删除: ${changesDetails.deleted} files\n`;
     } else {
       msg += '  Status: clean\n';
     }
@@ -57,8 +55,22 @@ function buildMessage() {
 
   if (tempInfo.count > 0) {
     msg += `🧹 Temp files: ${tempInfo.count}\n`;
+
+    const grouped = {};
     for (const file of tempInfo.files) {
-      msg += `  • ${file}\n`;
+      const dir = require('path').dirname(file);
+      if (!grouped[dir]) grouped[dir] = [];
+      grouped[dir].push(require('path').basename(file));
+    }
+
+    for (const [dir, files] of Object.entries(grouped)) {
+      msg += `  📂 ${dir}/ (${files.length})\n`;
+      for (let i = 0; i < Math.min(3, files.length); i++) {
+        msg += `    • ${files[i]}\n`;
+      }
+      if (files.length > 3) {
+        msg += `    ... and ${files.length - 3} more\n`;
+      }
     }
   } else {
     msg += '✅ No temp files\n';

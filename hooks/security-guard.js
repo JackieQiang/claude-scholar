@@ -114,37 +114,56 @@ if (toolName === 'Bash') {
   }
 
   // Check sensitive files
-  const sensitiveFiles = [
-    '.env',
-    '.env.local',
-    '.env.production',
-    'credentials.json',
-    'key.pem',
-    'key.json',
-    'id_rsa',
-    '.aws/credentials',
-    '.npmrc'
-  ];
-
   if (decision === 'allow') {
     const fileName = path.basename(filePath);
-    for (const sensitiveFile of sensitiveFiles) {
-      if (fileName === sensitiveFile) {
-        systemMessage = `⚠️ Security notice: Modifying sensitive file (${sensitiveFile})`;
-        break;
+    let matched = '';
+
+    // .env 系列：匹配所有 .env 变体（.env, .env.local, .env.staging 等）
+    if (fileName.startsWith('.env')) {
+      matched = fileName;
+    }
+
+    // 密钥文件：精确匹配
+    if (!matched) {
+      const sensitiveExactFiles = [
+        'credentials.json',
+        'key.pem',
+        'key.json',
+        'id_rsa',
+      ];
+      for (const sf of sensitiveExactFiles) {
+        if (fileName === sf) {
+          matched = sf;
+          break;
+        }
       }
+    }
+
+    // credentials/secret 路径：检测路径中是否包含敏感目录
+    if (!matched) {
+      const sensitivePathPatterns = [
+        '.aws/credentials',
+        '.npmrc',
+      ];
+      for (const sp of sensitivePathPatterns) {
+        if (filePath.includes(sp)) {
+          matched = sp;
+          break;
+        }
+      }
+    }
+
+    if (matched) {
+      systemMessage = `⚠️ Security notice: Modifying sensitive file (${matched})`;
     }
   }
 
   // Check path traversal attack
-  if (filePath.includes('..')) {
+  const homedir = require('os').homedir();
+  const resolved = path.resolve(cwd, filePath);
+  if (!resolved.startsWith(cwd) && !resolved.startsWith(homedir)) {
     decision = 'deny';
-    reason = 'Path traversal attack detected';
-  }
-
-  // Check absolute path injection
-  if (filePath.includes('~/') && !filePath.startsWith(cwd)) {
-    systemMessage = '⚠️ Path notice: File path is outside project directory';
+    reason = 'Path traversal attack detected: resolved path is outside allowed directories';
   }
 }
 
