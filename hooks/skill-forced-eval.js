@@ -101,30 +101,62 @@ function collectSkills() {
   return [...new Set(skills)].sort();
 }
 
+// Categorize skills into groups
+function categorizeSkills(skills) {
+  const categories = {
+    'Research & Writing': /research|paper|writing|citation|review-response|rebuttal|post-acceptance|doc-coauthoring|latex|daily-paper|ml-paper|results-analysis|brainstorm/,
+    'Development': /coding|git|code-review|bug|architecture|verification|tdd|uv-package|webapp-testing|kaggle|driven-development|development-branch|planning|dispatching|executing|using-superpowers/,
+    'Plugin Dev': /skill-|command-|hook-|mcp-|agent-identifier|command-name/,
+    'Design & UI': /frontend|ui-ux|web-design|canvas|brand|theme|algorithmic-art|slack-gif|figma/,
+    'Documents': /docx|xlsx|pptx|pdf|internal-comms|web-artifacts/,
+  };
+
+  const grouped = {};
+  for (const cat of Object.keys(categories)) {
+    grouped[cat] = [];
+  }
+  grouped['Other'] = [];
+
+  for (const skill of skills) {
+    let matched = false;
+    for (const [cat, regex] of Object.entries(categories)) {
+      if (regex.test(skill)) {
+        grouped[cat].push(skill);
+        matched = true;
+        break;
+      }
+    }
+    if (!matched) {
+      grouped['Other'].push(skill);
+    }
+  }
+
+  return grouped;
+}
+
 // Generate skill list
 const SKILL_LIST = collectSkills();
+const SKILL_GROUPS = categorizeSkills(SKILL_LIST);
+
+// Format grouped skills (skip empty groups)
+const groupedDisplay = Object.entries(SKILL_GROUPS)
+  .filter(([, skills]) => skills.length > 0)
+  .map(([cat, skills]) => `[${cat}] ${skills.join(', ')}`)
+  .join('\n');
 
 // Generate output
 const output = `## Instruction: Forced Skill Activation (Mandatory)
 
-### Step 1 - Evaluate Skills
-For each skill below, state: [skill name] - Yes/No - [reason]
+Silently scan the user's request against available skills. Do NOT list every skill with Yes/No.
 
 Available skills:
-${SKILL_LIST.map(skill => `- ${skill}`).join('\n')}
-### Step 2 - Activate
-If any skill is "Yes" → Immediately activate using the Skill tool
-If all skills are "No" → State "No skills needed" and continue
+${groupedDisplay}
 
-### Step 3 - Implement
-Only begin implementation after Step 2 is complete.
-
-**Critical Rules**:
-1. You must call Skill() tool in Step 2, do not skip directly to implementation;
-2. First evaluate all skills in Step 1, do not skip any skill;
-3. When multiple skills are relevant, activate all of them;
-4. Judgment must be only Yes or No: Yes = clearly relevant and required, No = not relevant or not required, remove the "maybe" option;
-5. Only begin implementation after completing the above steps.
+**Action**:
+- If any skill matches → Activate via Skill tool, then output: "Activating: [skill-name] — [reason]"
+- If no skill matches → Output: "No skills needed"
+- Begin implementation only after activation is complete.
+- When multiple skills match, activate all of them.
 `;
 
 console.log(output);

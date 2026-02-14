@@ -81,35 +81,6 @@ if (gitInfo.is_repo) {
 
 logContent += `\n`;
 
-// Smart suggestions
-if (gitInfo.has_changes) {
-  logContent += `## 💡 Suggested Actions\n`;
-  logContent += `\n`;
-
-  const typeAnalysis = common.analyzeChangesByType(cwd);
-
-  if (changesDetails.modified > 0 || changesDetails.added > 0) {
-    logContent += '- Review changes with code review tools\n';
-  }
-  if (typeAnalysis.test_files > 0) {
-    logContent += '- Test files changed, remember to run test suite\n';
-  }
-  if (typeAnalysis.docs_files > 0) {
-    logContent += '- Documentation updated, ensure sync with code\n';
-  }
-  if (typeAnalysis.sql_files > 0) {
-    logContent += '- SQL files changed, ensure all database scripts are updated\n';
-  }
-  if (typeAnalysis.service_files > 0) {
-    logContent += '- New Service/Controller added, remember to update API docs\n';
-  }
-  if (typeAnalysis.config_files > 0) {
-    logContent += '- Config files modified, check if environment variables need updating\n';
-  }
-
-  logContent += `\n`;
-}
-
 // Read transcript to extract key operations (if available)
 if (transcriptPath && fs.existsSync(transcriptPath)) {
   try {
@@ -149,14 +120,10 @@ if (transcriptPath && fs.existsSync(transcriptPath)) {
 logContent += `## 🎯 Next Steps\n`;
 logContent += `\n`;
 
-// Git commit suggestions
 if (gitInfo.has_changes) {
-  logContent += '- ⚠️ Uncommitted changes detected, consider committing first:\n';
-  logContent += '  ```bash\n';
-  logContent += '  git add . && git commit -m "feat: xxx"\n';
-  logContent += '  ```\n';
+  logContent += `- ⚠️ Uncommitted changes detected (${gitInfo.changes_count} files)\n`;
 } else {
-  logContent += '- ✅ Working directory clean, ready for new tasks\n';
+  logContent += '- ✅ Working directory clean\n';
 }
 
 // Todo reminders
@@ -194,6 +161,21 @@ logContent += `\n`;
 
 // Write log file
 fs.writeFileSync(logFile, logContent, 'utf8');
+
+// Clean up old log files (older than 30 days)
+try {
+  const maxAge = 30 * 24 * 60 * 60 * 1000;
+  const files = fs.readdirSync(logDir).filter(f => f.startsWith('session-') && f.endsWith('.md'));
+  for (const file of files) {
+    const filePath = path.join(logDir, file);
+    const stat = fs.statSync(filePath);
+    if (now.getTime() - stat.mtimeMs > maxAge) {
+      fs.unlinkSync(filePath);
+    }
+  }
+} catch {
+  // Log cleanup failure should not affect main flow
+}
 
 // Build message to display to user
 let displayMsg = '\n---\n';
