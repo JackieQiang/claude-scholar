@@ -2,13 +2,19 @@
 
 <div align="center">
   <img src="LOGO.jpeg" alt="Claude Scholar Logo" width="100%"/>
+
+  <p>
+    <a href="https://github.com/Galaxy-Dawn/claude-scholar/stargazers"><img src="https://img.shields.io/github/stars/Galaxy-Dawn/claude-scholar?style=flat-square&color=yellow" alt="Stars"/></a>
+    <a href="https://github.com/Galaxy-Dawn/claude-scholar/network/members"><img src="https://img.shields.io/github/forks/Galaxy-Dawn/claude-scholar?style=flat-square" alt="Forks"/></a>
+    <img src="https://img.shields.io/github/last-commit/Galaxy-Dawn/claude-scholar?style=flat-square" alt="Last Commit"/>
+    <img src="https://img.shields.io/badge/License-MIT-green?style=flat-square" alt="License"/>
+    <img src="https://img.shields.io/badge/Claude_Code-Compatible-blueviolet?style=flat-square" alt="Claude Code"/>
+  </p>
+
+  <strong>Language</strong>: <a href="README.md">English</a> | <a href="README.zh-CN.md">中文</a>
 </div>
 
-**Language**: [English](README.md) | [中文](README.zh-CN.md)
-
-> **Configuration Language**: `CLAUDE.md` is in English for international readability. Chinese users can switch: `cp CLAUDE.zh-CN.md CLAUDE.md`
-
-Personal Claude Code configuration repository, optimized for academic research and software development - a complete working environment.
+> Personal Claude Code configuration for academic research and software development — covering the full research lifecycle from ideation to publication.
 
 ## News
 
