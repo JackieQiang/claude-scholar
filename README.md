@@ -18,12 +18,17 @@
 
 ## News
 
+<details>
+<summary>View changelog</summary>
+
 - **2026-02-20**: Bilingual config — translated `CLAUDE.md` to English for international readability; added `CLAUDE.zh-CN.md` as Chinese backup; Chinese users can switch with `cp CLAUDE.zh-CN.md CLAUDE.md`
 - **2026-02-15**: Zotero MCP integration — added `/zotero-review` and `/zotero-notes` commands, updated `research-ideation` skill with Zotero integration guide, enhanced `literature-reviewer` agent with Zotero MCP support for automated paper import, collection management, full-text reading, and citation export
 - **2026-02-14**: Hooks optimization — restructured `security-guard` to two-tier system (Block + Confirm), `skill-forced-eval` now groups skills into 6 categories with silent scan mode, `session-start` limits display to top 5, `session-summary` adds 30-day log auto-cleanup, `stop-summary` shows separate added/modified/deleted counts; removed deprecated shell scripts (lib/common.sh, lib/platform.sh)
 - **2026-02-11**: Major update — added 10 new skills (research-ideation, results-analysis, citation-verification, review-response, paper-self-review, post-acceptance, daily-coding, frontend-design, ui-ux-pro-max, web-design-reviewer), 7 new agents, 8 research workflow commands, 2 new rules (security, experiment-reproducibility); restructured CLAUDE.md; 89 files changed
 - **2026-01-26**: Rewrote all Hooks to cross-platform Node.js; completely rewrote README; expanded ML paper writing knowledge base; merged PR #1 (cross-platform support)
 - **2026-01-25**: Project open-sourced, v1.0.0 released with 25 skills (architecture-design, bug-detective, git-workflow, kaggle-learner, scientific-writing, etc.), 2 agents (paper-miner, kaggle-miner), 30+ commands (including SuperClaude suite), 5 Shell Hooks, and 2 rules (coding-style, agents)
+
+</details>
 
 ## Introduction
 
@@ -215,6 +220,9 @@ skill-development → skill-quality-reviewer → skill-improver
 
 ## File Structure
 
+<details>
+<summary>View file structure</summary>
+
 ```
 claude-scholar/
 ├── hooks/               # Cross-platform JavaScript hooks (automated enforcement)
@@ -338,6 +346,8 @@ claude-scholar/
 │
 └── README.md            # This file - overview, installation, features
 ```
+
+</details>
 
 ## Feature Highlights
 
