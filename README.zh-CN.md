@@ -14,12 +14,14 @@
   <strong>语言</strong>: <a href="README.md">English</a> | <a href="README.zh-CN.md">中文</a>
 </div>
 
-> 面向学术研究和软件开发的个人 Claude Code 配置仓库 — 覆盖从构思到发表的完整研究生命周期。
+> 面向学术研究和软件开发的个人 Claude Code / **OpenCode** 配置仓库 — 覆盖从构思到发表的完整研究生命周期。
 
 ## News
 
+- **2026-02-21**: **OpenCode** 支持 — Claude Scholar 现已支持 [OpenCode](https://github.com/opencode-ai/opencode) 作为替代 CLI；切换到 `opencode` 分支获取兼容配置
+
 <details>
-<summary>查看更新日志</summary>
+<summary>查看历史更新日志</summary>
 
 - **2026-02-20**: 双语配置 — 将 `CLAUDE.md` 翻译为英文以便国际用户阅读；新增 `CLAUDE.zh-CN.md` 作为中文备份；中文用户可通过 `cp CLAUDE.zh-CN.md CLAUDE.md` 切换回中文版
 - **2026-02-15**: Zotero MCP 集成 — 新增 `/zotero-review` 和 `/zotero-notes` 命令，更新 `research-ideation` skill 添加 Zotero 集成指南，增强 `literature-reviewer` agent 支持 Zotero MCP 自动论文导入、集合管理、全文阅读和引用导出

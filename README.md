@@ -14,12 +14,14 @@
   <strong>Language</strong>: <a href="README.md">English</a> | <a href="README.zh-CN.md">中文</a>
 </div>
 
-> Personal Claude Code configuration for academic research and software development — covering the full research lifecycle from ideation to publication.
+> Personal Claude Code / **OpenCode** configuration for academic research and software development — covering the full research lifecycle from ideation to publication.
 
 ## News
 
+- **2026-02-21**: **OpenCode** support — Claude Scholar now supports [OpenCode](https://github.com/opencode-ai/opencode) as an alternative CLI; switch to the `opencode` branch for OpenCode-compatible configuration
+
 <details>
-<summary>View changelog</summary>
+<summary>View older changelog</summary>
 
 - **2026-02-20**: Bilingual config — translated `CLAUDE.md` to English for international readability; added `CLAUDE.zh-CN.md` as Chinese backup; Chinese users can switch with `cp CLAUDE.zh-CN.md CLAUDE.md`
 - **2026-02-15**: Zotero MCP integration — added `/zotero-review` and `/zotero-notes` commands, updated `research-ideation` skill with Zotero integration guide, enhanced `literature-reviewer` agent with Zotero MCP support for automated paper import, collection management, full-text reading, and citation export
