@@ -34,15 +34,15 @@ Read and analyze papers in the Zotero collection "$collection", with analysis de
 
 ### Step 1: Locate Collection
 
-1. Call `mcp__zotero__get_collections` to list all collections
+1. Call `mcp__zotero__zotero_get_collections` to list all collections
 2. Find the collection matching "$collection"
-3. Call `mcp__zotero__get_collection_items` to get all items in the collection
+3. Call `mcp__zotero__zotero_get_collection_items` to get all items in the collection
 
 ### Step 2: Read Papers
 
 For each paper in the collection:
-1. Call `mcp__zotero__get_items_details` with `include_abstract: true` to get metadata and abstracts (ensures abstracts are available as fallback if full-text retrieval fails)
-2. Call `mcp__zotero__get_item_fulltext` to read full text (if PDF is available)
+1. Call `mcp__zotero__zotero_get_item_metadata` with `include_abstract: true` to get metadata and abstracts (ensures abstracts are available as fallback if full-text retrieval fails)
+2. Call `mcp__zotero__zotero_get_item_fulltext` to read full text (if PDF is available)
 3. If depth is "quick": analyze only the abstract and introduction
 4. If depth is "deep": analyze the complete paper content
 

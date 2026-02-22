@@ -48,6 +48,7 @@ Claude Scholar is a personal configuration system for Claude Code CLI, providing
 | 📚 [Core Workflows](#core-workflows) | Paper writing, code organization, skill evolution |
 | 🛠️ [What's Included](#whats-included) | Skills, commands, agents overview |
 | 📖 [Installation Guide](#installation-options) | Full, minimal, or selective setup |
+| 📦 [MCP Setup](#mcp-server-setup-optional) | Zotero MCP for research workflows |
 | 🔧 [Project Rules](#project-rules) | Coding style and agent orchestration |
 
 ## Core Workflows
@@ -530,6 +531,38 @@ cp rules/agents.md ~/.claude/rules/
 - Git
 - (Optional) Node.js (for hooks)
 - (Optional) uv, Python (for Python development)
+- **Zotero desktop app** (for Zotero MCP features)
+
+### MCP Setup (Optional)
+
+For Zotero-integrated research workflows, install the MCP server:
+
+```bash
+# Install Zotero MCP server
+uv tool install zotero-mcp-server
+
+# Enable Local API in Zotero desktop app:
+# Edit → Settings → Advanced → Check "Allow other applications on this computer to communicate with Zotero"
+```
+
+Then add to your `~/.claude/settings.json`:
+
+```json
+{
+  "mcpServers": {
+    "zotero": {
+      "command": "zotero-mcp",
+      "args": ["serve"],
+      "env": {
+        "ZOTERO_LOCAL": "true",
+        "NO_PROXY": "localhost,127.0.0.1"
+      }
+    }
+  }
+}
+```
+
+See [MCP_SETUP.md](./MCP_SETUP.md) for detailed setup guide and troubleshooting.
 
 ### First Run
 

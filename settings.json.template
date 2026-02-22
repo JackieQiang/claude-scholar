@@ -82,6 +82,14 @@
       "type": "streamable-http",
       "url": "http://127.0.0.1:12306/mcp",
       "description": "Chrome browser automation control service"
+    },
+    "zotero": {
+      "command": "zotero-mcp",
+      "args": ["serve"],
+      "env": {
+        "ZOTERO_LOCAL": "true",
+        "NO_PROXY": "localhost,127.0.0.1"
+      }
     }
   },
   "verbose": true

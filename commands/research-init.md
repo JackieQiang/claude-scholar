@@ -66,7 +66,7 @@ Execute the following steps in order:
 3. **Classify before import**: For each paper, determine which sub-collection it belongs to (Core Papers, Methods, Applications, Baselines, or To-Read) based on its title, abstract, and venue
 4. **Pre-import deduplication (two-step)**:
    - Call `mcp__zotero__search_library` with the DOI string to find potential matches
-   - Call `mcp__zotero__get_items_details` on results to confirm the DOI field matches exactly
+   - Call `mcp__zotero__zotero_get_item_metadata` on results to confirm the DOI field matches exactly
    - If confirmed match → skip import, log ("Already exists: {DOI} → {item_key}")
    - For papers without DOI → search by title using token overlap ratio (lowercase both titles, remove punctuation, compute intersection of words / union of words). Ratio > 0.8 = duplicate
 5. **Import with collection assignment**: Call `mcp__zotero__add_items_by_doi` with the target sub-collection's `collection_key` to add papers directly into the correct sub-collection
@@ -78,9 +78,9 @@ Execute the following steps in order:
 
 ### Step 3: Paper Analysis
 
-1. Call `mcp__zotero__get_collection_items` to list imported papers
-2. Call `mcp__zotero__get_items_details` with `include_abstract: true` to get metadata and abstracts (ensures abstracts are available as fallback if full-text retrieval fails)
-3. Call `mcp__zotero__get_item_fulltext` to read full text of papers with PDFs
+1. Call `mcp__zotero__zotero_get_collection_items` to list imported papers
+2. Call `mcp__zotero__zotero_get_item_metadata` with `include_abstract: true` to get metadata and abstracts (ensures abstracts are available as fallback if full-text retrieval fails)
+3. Call `mcp__zotero__zotero_get_item_fulltext` to read full text of papers with PDFs
 3. For each paper, extract:
    - Research question and motivation
    - Core methodology

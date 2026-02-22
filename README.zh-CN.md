@@ -48,6 +48,7 @@ Claude Scholar 是一个面向 Claude Code CLI 的个人配置系统，提供丰
 | 📚 [核心工作流](#核心工作流) | 论文写作、代码组织、技能进化 |
 | 🛠️ [功能亮点](#功能亮点) | 技能、命令、代理概览 |
 | 📖 [安装指南](#安装选项) | 完整、最小化或选择性安装 |
+| 📦 [MCP 配置](#mcp-服务配置可选) | Zotero MCP 研究工作流集成 |
 | 🔧 [项目规则](#项目规则) | 代码风格和代理编排 |
 
 ## 核心工作流
@@ -530,6 +531,38 @@ cp rules/agents.md ~/.claude/rules/
 - Git
 - （可选）Node.js（用于钩子）
 - （可选）uv、Python（用于 Python 开发）
+- **Zotero 桌面客户端**（用于 Zotero MCP 功能）
+
+### MCP 服务配置（可选）
+
+如需使用 Zotero 集成的研究工作流，请安装 MCP 服务器：
+
+```bash
+# 安装 Zotero MCP 服务器
+uv tool install zotero-mcp-server
+
+# 在 Zotero 桌面客户端中启用本地 API：
+# 编辑 → 设置 → 高级 → 勾选"允许其他应用程序与 Zotero 通信"
+```
+
+然后在 `~/.claude/settings.json` 中添加：
+
+```json
+{
+  "mcpServers": {
+    "zotero": {
+      "command": "zotero-mcp",
+      "args": ["serve"],
+      "env": {
+        "ZOTERO_LOCAL": "true",
+        "NO_PROXY": "localhost,127.0.0.1"
+      }
+    }
+  }
+}
+```
+
+详细设置指南和故障排除请参阅 [MCP_SETUP.zh-CN.md](./MCP_SETUP.zh-CN.md)。
 
 ### 首次运行
 
