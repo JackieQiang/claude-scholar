@@ -462,14 +462,12 @@ Choose the installation method that fits your needs:
 
 #### Option 1: Full Installation (Recommended)
 
-Complete setup for data science, AI research, and academic writing:
-
 ```bash
-# Clone the repository
-git clone https://github.com/Galaxy-Dawn/claude-scholar.git ~/.claude
-
-# Restart Claude Code CLI
+git clone https://github.com/Galaxy-Dawn/claude-scholar.git /tmp/claude-scholar
+bash /tmp/claude-scholar/scripts/setup.sh
 ```
+
+The script merges skills/commands/agents/rules/hooks into your existing `~/.claude`, and adds hooks/mcpServers/enabledPlugins to your `settings.json` (auto-backup to `settings.json.bak`). Your env and permissions are untouched.
 
 **Includes**: All 32 skills, 50+ commands, 14 agents, 5 hooks, and project rules.
 
@@ -495,6 +493,8 @@ cp -r /tmp/claude-scholar/skills/bug-detective ~/.claude/skills/
 # Cleanup
 rm -rf /tmp/claude-scholar
 ```
+
+**Post-install**: Merge hooks config into your `settings.json` — see `settings.json.template` for the required hooks entries.
 
 **Includes**: 5 hooks, 7 core skills (complete research workflow + essential development).
 
@@ -523,13 +523,15 @@ cp rules/coding-style.md ~/.claude/rules/
 cp rules/agents.md ~/.claude/rules/
 ```
 
+**Post-install**: Merge hooks config into your `settings.json` — see `settings.json.template`.
+
 **Recommended for**: Advanced users who want custom configurations.
 
 ### Requirements
 
 - Claude Code CLI
 - Git
-- (Optional) Node.js (for hooks)
+- Node.js (required for hooks)
 - (Optional) uv, Python (for Python development)
 - **Zotero desktop app** (for Zotero MCP features)
 

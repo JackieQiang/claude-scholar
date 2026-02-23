@@ -1,14 +1,6 @@
 {
   "env": {
-    "ANTHROPIC_AUTH_TOKEN": "<your-anthropic-token>",
-    "ANTHROPIC_BASE_URL": "<your-base-url>",
-    "API_TIMEOUT_MS": "3000000",
-    "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
-    "GITHUB_PERSONAL_ACCESS_TOKEN": "<your-github-token>"
-  },
-  "permissions": {
-    "allow": [],
-    "deny": []
+    "GITHUB_PERSONAL_ACCESS_TOKEN": "<your-github-token-optional>"
   },
   "hooks": {
     "PreToolUse": [

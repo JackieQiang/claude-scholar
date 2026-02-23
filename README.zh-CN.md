@@ -462,14 +462,14 @@ claude-scholar/
 
 #### 选项 1：完整安装（推荐）
 
-数据科学、AI 研究和学术写作的完整设置：
+安全合并到已有的 `~/.claude` 目录，不会覆盖个人配置：
 
 ```bash
-# 克隆仓库
-git clone https://github.com/Galaxy-Dawn/claude-scholar.git ~/.claude
-
-# 重启 Claude Code CLI
+git clone https://github.com/Galaxy-Dawn/claude-scholar.git /tmp/claude-scholar
+bash /tmp/claude-scholar/scripts/setup.sh
 ```
+
+脚本会将 skills/commands/agents/rules/hooks 复制到 `~/.claude`，并将 hooks/mcpServers/enabledPlugins 合并到 `settings.json`（自动备份为 `settings.json.bak`）。你的 env 和 permissions 不受影响。
 
 **包含**：所有 32 个技能、50+ 命令、14 个代理、5 个钩子和项目规则。
 
@@ -495,6 +495,8 @@ cp -r /tmp/claude-scholar/skills/bug-detective ~/.claude/skills/
 # 清理
 rm -rf /tmp/claude-scholar
 ```
+
+**安装后**：需要将 hooks 配置合并到 `settings.json` — 参考 `settings.json.template` 中的 hooks 条目。
 
 **包含**：5 个钩子、7 个核心技能（完整研究工作流 + 基本开发）。
 
@@ -523,13 +525,15 @@ cp rules/coding-style.md ~/.claude/rules/
 cp rules/agents.md ~/.claude/rules/
 ```
 
+**安装后**：需要将 hooks 配置合并到 `settings.json` — 参考 `settings.json.template`。
+
 **推荐用于**：想要自定义配置的高级用户。
 
 ### 系统要求
 
 - Claude Code CLI
 - Git
-- （可选）Node.js（用于钩子）
+- Node.js（钩子依赖，必需）
 - （可选）uv、Python（用于 Python 开发）
 - **Zotero 桌面客户端**（用于 Zotero MCP 功能）
 
