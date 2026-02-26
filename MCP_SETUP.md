@@ -27,6 +27,12 @@ uv tool install zotero-mcp-server
 
 #### Configuration
 
+claude code V2.1.5 
+
+Add to your  `~/.claude.json` under `mcpServers`:
+
+Claude code (earlier version)
+
 Add to your `~/.claude/settings.json` under `mcpServers`:
 
 ```json
@@ -85,6 +91,11 @@ This is optional and only needed if you want browser automation capabilities.
 After configuration, restart Claude Code and verify MCP servers are connected:
 
 ```
+# launch zotero-mcp server first
+> zotero-mcp
+> claude mcp list
+# seen "zotero: zotero-mcp serve - ✓ Connected" is mean success
+
 # In Claude Code, try calling a Zotero tool:
 > List my Zotero collections
 ```
