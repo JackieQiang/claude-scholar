@@ -26,9 +26,9 @@ uv tool install zotero-mcp-server
 ```
 
 #### 配置
-# claude code V2.1.5版本
+claude code V2.1.5版本
 在 `~/.claude.json` 的 `mcpServers` 中添加：
-# 更早的版本在
+更早的版本在
 在 `~/.claude/settings.json` 的 `mcpServers` 中添加：
 
 ```json
