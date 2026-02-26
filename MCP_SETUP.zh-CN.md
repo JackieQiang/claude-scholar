@@ -26,7 +26,9 @@ uv tool install zotero-mcp-server
 ```
 
 #### 配置
-
+# claude code V2.1.5版本
+在 `~/.claude.json` 的 `mcpServers` 中添加：
+# 更早的版本在
 在 `~/.claude/settings.json` 的 `mcpServers` 中添加：
 
 ```json
@@ -84,7 +86,13 @@ uv tool install zotero-mcp-server
 
 配置完成后，重启 Claude Code 并验证 MCP 服务是否连接：
 
+
 ```
+#  命令行中先启动 zotero-mcp 服务
+> zotero-mcp
+> claude mcp list
+# 看到"zotero: zotero-mcp serve - ✓ Connected"就成功了
+
 # 在 Claude Code 中尝试调用 Zotero 工具：
 > 列出我的 Zotero 集合
 ```
